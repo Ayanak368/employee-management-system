@@ -7,4 +7,7 @@ urlpatterns = [
     path('dashboard-stats/', views.dashboard_stats, name='dashboard_stats'),
 
     path('<int:pk>/', views.EmployeeDetailView.as_view(), name='employee_detail'),
+    
+    path("login/", views.LoginView.as_view(), name="login"),
+
 ]
