@@ -1,0 +1,30 @@
+[
+{
+  "model": "employees.employee",
+  "pk": 2,
+  "fields": {
+    "name": "Rahul",
+    "email": "rahul@gmail.com",
+    "phone": "9876543210",
+    "department": "ITy",
+    "designation": "Frontend Developer",
+    "joining_date": "2026-11-05",
+    "salary": "30000.00",
+    "status": "Inactive"
+  }
+},
+{
+  "model": "employees.employee",
+  "pk": 4,
+  "fields": {
+    "name": "fggh",
+    "email": "ghh@gmail.com",
+    "phone": "155454545412",
+    "department": "hbh",
+    "designation": "njn",
+    "joining_date": "2026-11-20",
+    "salary": "25000.00",
+    "status": "Active"
+  }
+}
+]
