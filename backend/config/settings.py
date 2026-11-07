@@ -11,12 +11,9 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
-<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
 load_dotenv()
-=======
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,14 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-<<<<<<< HEAD
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
     raise ValueError("DJANGO_SECRET_KEY is not configured")
-=======
 SECRET_KEY = "REDACTED"
 
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -56,10 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'employees',
-<<<<<<< HEAD
      'accounts',
-=======
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 ]
 
 MIDDLEWARE = [
@@ -97,29 +88,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-<<<<<<< HEAD
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-        "OPTIONS": {
-            "charset": "utf8mb4",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '3307'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
         },
-=======
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     }
 }
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
 
@@ -165,12 +148,9 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-<<<<<<< HEAD
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
-=======
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c

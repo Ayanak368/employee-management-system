@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from rest_framework.generics import (
     GenericAPIView,
     ListAPIView,
@@ -69,7 +68,6 @@ class ManagerViewSet(ModelViewSet):
         return ManagerListSerializer  
     
 
-=======
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -102,15 +100,11 @@ class EmployeeListView(ListCreateAPIView):
 class EmployeeDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
 
 # Dashboard statistics
 @api_view(['GET'])
-<<<<<<< HEAD
 @permission_classes([IsHR])
-=======
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 def dashboard_stats(request):
     data = {
         'total_employees': Employee.objects.count(),
@@ -121,7 +115,6 @@ def dashboard_stats(request):
 
     return Response(data)
 
-<<<<<<< HEAD
 class DepartmentListView(ListAPIView):
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
@@ -166,8 +159,6 @@ class ManagerViewSet(ModelViewSet):
         instance.user.delete()
 
 
-=======
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
  # Login view
 
 

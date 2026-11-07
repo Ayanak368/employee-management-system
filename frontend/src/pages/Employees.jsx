@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import { useEffect, useState } from "react";
 import API from "../services/api";
@@ -26,7 +25,9 @@ function Employees() {
 
         setEmployees(
           role === "EMPLOYEE"
-            ? response.data ? [response.data] : []
+            ? response.data
+              ? [response.data]
+              : []
             : response.data
         );
       } catch (err) {
@@ -166,19 +167,8 @@ function Employees() {
           )}
         </div>
       </div>
-=======
-function Employees() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Employees</h1>
-      <p>Manage all employees here.</p>
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     </div>
   );
 }
 
-<<<<<<< HEAD
 export default Employees;
-=======
-export default Employees;
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c

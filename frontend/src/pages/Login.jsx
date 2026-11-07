@@ -18,40 +18,6 @@ function Login({ onLogin }) {
     });
   };
 
-<<<<<<< HEAD
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  setError("");
-  setLoading(true);
-
-  try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/api/token/",
-      formData
-    );
-
-    const { access, refresh } = response.data;
-
-    // Store JWT tokens
-    localStorage.setItem("access_token", access);
-    localStorage.setItem("refresh_token", refresh);
-    localStorage.setItem("role", response.data.role);
-    localStorage.setItem("username", formData.username);
-
-    // Login successful
-    onLogin();
-
-  } catch (err) {
-    setError(
-      err.response?.data?.detail ||
-      "Invalid username or password"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
-=======
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -60,35 +26,30 @@ const handleSubmit = async (e) => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/employees/login/",
+        "http://127.0.0.1:8000/api/token/",
         formData
       );
 
-      const { access_token, refresh_token } = response.data;
+      const { access, refresh, role } = response.data;
 
-      // Check whether both tokens are returned
-      if (!access_token || !refresh_token) {
-        throw new Error("Access or refresh token is missing from the server response.");
-      }
-
-      // Store tokens
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
+      // Store JWT tokens
+      localStorage.setItem("access_token", access);
+      localStorage.setItem("refresh_token", refresh);
+      localStorage.setItem("role", role);
+      localStorage.setItem("username", formData.username);
 
       // Login successful
       onLogin();
 
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-        err.message ||
+        err.response?.data?.detail ||
         "Invalid username or password"
       );
     } finally {
       setLoading(false);
     }
   };
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">

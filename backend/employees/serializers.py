@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -17,12 +16,24 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     department_name = serializers.CharField(
         source='department.name',
-        read_only=True
+        read_only=True,
+        allow_null=True
     )
 
     class Meta:
         model = Employee
-        fields = '__all__'
+        fields = [
+            'id',
+            'name',
+            'email',
+            'phone',
+            'department',
+            'department_name',
+            'designation',
+            'joining_date',
+            'salary',
+            'status',
+        ]
 
     def get_fields(self):
         fields = super().get_fields()
@@ -35,8 +46,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
                 fields.pop('salary', None)
 
         return fields
-
-
 # ==========================================
 # 2. Login Serializer
 # ==========================================
@@ -230,18 +239,7 @@ class ManagerListSerializer(serializers.ModelSerializer):
             'email',
             'department_name',
         ]
-=======
 from rest_framework import serializers
 from .models import Employee
 
 
-class EmployeeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Employee
-        fields = '__all__'
-        
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField(write_only=True)
->>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
