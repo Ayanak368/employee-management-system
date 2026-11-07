@@ -1,8 +1,11 @@
+
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Sidebar({ onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const role = localStorage.getItem("role");
 
   const linkStyle = ({ isActive }) =>
     `block rounded-lg px-4 py-3 text-sm font-medium transition ${
@@ -48,6 +51,12 @@ function Sidebar({ onLogout }) {
           <NavLink to="/departments" className={linkStyle}>
             Departments
           </NavLink>
+
+          {role === "HR" && (
+            <NavLink to="/managers" className={linkStyle}>
+              Managers
+            </NavLink>
+          )}
         </nav>
 
         <button
@@ -85,6 +94,16 @@ function Sidebar({ onLogout }) {
             >
               Departments
             </NavLink>
+
+            {role === "HR" && (
+              <NavLink
+                to="/managers"
+                className={linkStyle}
+                onClick={closeMenu}
+              >
+                Managers
+              </NavLink>
+            )}
           </nav>
 
           <button

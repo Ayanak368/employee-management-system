@@ -5,6 +5,7 @@ function EmployeeForm({
   editId,
   saving,
   error,
+  departments = [],
   onChange,
   onSubmit,
   onClose,
@@ -16,27 +17,22 @@ function EmployeeForm({
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-white p-5 shadow-xl sm:p-7">
 
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between gap-3">
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <h2 className="text-lg font-bold text-slate-800 sm:text-xl">
               {editId ? "Edit Employee" : "Add Employee"}
             </h2>
-
             <p className="mt-1 text-xs text-slate-400 sm:text-sm">
               Enter employee information below.
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg bg-slate-100 px-3 py-2 text-slate-500 transition hover:bg-slate-200"
-          >
+          <button type="button" onClick={onClose}
+            className="rounded-lg bg-slate-100 px-3 py-2 text-slate-500 hover:bg-slate-200">
             ✕
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={onSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
@@ -48,7 +44,7 @@ function EmployeeForm({
               <input
                 type="text"
                 name="name"
-                value={formData.name}
+                value={formData.name || ""}
                 onChange={onChange}
                 required
                 placeholder="Enter employee name"
@@ -64,7 +60,7 @@ function EmployeeForm({
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                value={formData.email || ""}
                 onChange={onChange}
                 required
                 placeholder="Enter email address"
@@ -80,7 +76,7 @@ function EmployeeForm({
               <input
                 type="tel"
                 name="phone"
-                value={formData.phone}
+                value={formData.phone || ""}
                 onChange={onChange}
                 required
                 placeholder="Enter phone number"
@@ -88,20 +84,25 @@ function EmployeeForm({
               />
             </div>
 
-            {/* Department */}
+            {/* Department dropdown */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-600">
                 Department
               </label>
-              <input
-                type="text"
+              <select
                 name="department"
-                value={formData.department}
+                value={formData.department || ""}
                 onChange={onChange}
                 required
-                placeholder="Enter department"
-                className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm outline-none focus:border-violet-400"
-              />
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-violet-400"
+              >
+                <option value="">Select Department</option>
+                {departments.map((department) => (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Designation */}
@@ -112,7 +113,7 @@ function EmployeeForm({
               <input
                 type="text"
                 name="designation"
-                value={formData.designation}
+                value={formData.designation || ""}
                 onChange={onChange}
                 required
                 placeholder="Enter designation"
@@ -128,7 +129,7 @@ function EmployeeForm({
               <input
                 type="date"
                 name="joining_date"
-                value={formData.joining_date}
+                value={formData.joining_date || ""}
                 onChange={onChange}
                 required
                 className="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm outline-none focus:border-violet-400"
@@ -143,7 +144,7 @@ function EmployeeForm({
               <input
                 type="number"
                 name="salary"
-                value={formData.salary}
+                value={formData.salary || ""}
                 onChange={onChange}
                 required
                 min="0"
@@ -159,7 +160,7 @@ function EmployeeForm({
               </label>
               <select
                 name="status"
-                value={formData.status}
+                value={formData.status || "Active"}
                 onChange={onChange}
                 className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-violet-400"
               >
@@ -169,7 +170,6 @@ function EmployeeForm({
             </div>
           </div>
 
-          {/* Error */}
           {error && (
             <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
               {error}
@@ -189,13 +189,9 @@ function EmployeeForm({
             <button
               type="submit"
               disabled={saving}
-              className="w-full rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+              className="w-full rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-60 sm:w-auto"
             >
-              {saving
-                ? "Saving..."
-                : editId
-                  ? "Update Employee"
-                  : "Add Employee"}
+              {saving ? "Saving..." : editId ? "Update Employee" : "Add Employee"}
             </button>
           </div>
         </form>

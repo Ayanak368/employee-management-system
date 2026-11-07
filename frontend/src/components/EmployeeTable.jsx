@@ -2,6 +2,7 @@
 function EmployeeTable({
   employees,
   loading,
+  role,
   search,
   setSearch,
   departments,
@@ -12,6 +13,7 @@ function EmployeeTable({
   onEdit,
   onDelete,
 }) {
+  // Filter employees
   const filteredEmployees = employees.filter((emp) => {
     const searchValue = search.toLowerCase();
 
@@ -25,11 +27,13 @@ function EmployeeTable({
       emp.department === departmentFilter;
 
     const matchesStatus =
-      statusFilter === "All" || emp.status === statusFilter;
+      statusFilter === "All" ||
+      emp.status === statusFilter;
 
     return matchesSearch && matchesDepartment && matchesStatus;
   });
 
+  // Format salary
   const formatSalary = (salary) =>
     Number(salary).toLocaleString("en-IN", {
       style: "currency",
@@ -46,11 +50,15 @@ function EmployeeTable({
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-6">
         <div>
           <h2 className="text-base font-bold text-slate-800 sm:text-lg">
-            Employee Directory
+            {role === "MANAGER"
+              ? "Department Employees"
+              : "Employee Directory"}
           </h2>
 
           <p className="mt-1 text-xs text-slate-400 sm:text-sm">
-            Manage and view all your employees.
+            {role === "MANAGER"
+              ? "View employees in your department."
+              : "Manage and view all your employees."}
           </p>
         </div>
 
@@ -105,16 +113,36 @@ function EmployeeTable({
             No employees found.
           </p>
         ) : (
-          <table className="w-full min-w-[850px] text-left">
+          <table className="w-full min-w-[750px] text-left">
             <thead>
               <tr className="border-b bg-slate-50 text-xs uppercase text-slate-400">
-                <th className="whitespace-nowrap px-4 py-4">Employee</th>
-                <th className="whitespace-nowrap px-4 py-4">Department</th>
-                <th className="whitespace-nowrap px-4 py-4">Designation</th>
-                <th className="whitespace-nowrap px-4 py-4">Joining Date</th>
-                <th className="whitespace-nowrap px-4 py-4">Salary</th>
-                <th className="whitespace-nowrap px-4 py-4">Status</th>
-                <th className="whitespace-nowrap px-4 py-4">Actions</th>
+                <th className="whitespace-nowrap px-4 py-4">
+                  Employee
+                </th>
+
+                <th className="whitespace-nowrap px-4 py-4">
+                  Department
+                </th>
+
+                <th className="whitespace-nowrap px-4 py-4">
+                  Designation
+                </th>
+
+                <th className="whitespace-nowrap px-4 py-4">
+                  Joining Date
+                </th>
+
+                {role === "HR" && (
+                  <>
+                    <th className="whitespace-nowrap px-4 py-4">
+                      Salary
+                    </th>
+
+                    <th className="whitespace-nowrap px-4 py-4">
+                      Actions
+                    </th>
+                  </>
+                )}
               </tr>
             </thead>
 
@@ -128,13 +156,14 @@ function EmployeeTable({
                     <p className="text-sm font-semibold text-slate-800">
                       {employee.name}
                     </p>
+
                     <p className="text-xs text-slate-400">
                       {employee.email}
                     </p>
                   </td>
 
                   <td className="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
-                    {employee.department}
+                    {employee.department_name || employee.department}
                   </td>
 
                   <td className="whitespace-nowrap px-4 py-4 text-sm text-slate-600">
@@ -147,39 +176,32 @@ function EmployeeTable({
                     ).toLocaleDateString("en-IN")}
                   </td>
 
-                  <td className="whitespace-nowrap px-4 py-4 text-sm font-semibold text-slate-700">
-                    {formatSalary(employee.salary)}
-                  </td>
+                  {/* HR-only columns */}
+                  {role === "HR" && (
+                    <>
+                      <td className="whitespace-nowrap px-4 py-4 text-sm font-semibold text-slate-700">
+                        {formatSalary(employee.salary)}
+                      </td>
 
-                  <td className="whitespace-nowrap px-4 py-4">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        employee.status === "Active"
-                          ? "bg-emerald-50 text-emerald-600"
-                          : "bg-orange-50 text-orange-600"
-                      }`}
-                    >
-                      {employee.status}
-                    </span>
-                  </td>
+                      <td className="whitespace-nowrap px-4 py-4">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => onEdit?.(employee)}
+                            className="rounded-md bg-violet-50 px-3 py-2 text-xs font-medium text-violet-600 transition hover:bg-violet-100"
+                          >
+                            Edit
+                          </button>
 
-                  <td className="whitespace-nowrap px-4 py-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => onEdit(employee)}
-                        className="rounded-md bg-violet-50 px-3 py-2 text-xs font-medium text-violet-600 transition hover:bg-violet-100"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        onClick={() => onDelete(employee.id)}
-                        className="rounded-md bg-red-50 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-100"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
+                          <button
+                            onClick={() => onDelete?.(employee.id)}
+                            className="rounded-md bg-red-50 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-100"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>

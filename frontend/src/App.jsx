@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   BrowserRouter,
@@ -7,11 +8,16 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+// Pages
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
 import Departments from "./pages/Departments";
+import Managers from "./pages/Managers";
+
+// Layout
 import Layout from "./components/Layout";
+
 
 function AppRoutes() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -20,21 +26,27 @@ function AppRoutes() {
 
   const navigate = useNavigate();
 
+  // Handle login
   const handleLogin = () => {
     setIsAuthenticated(true);
     navigate("/dashboard");
   };
 
+  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
+
     setIsAuthenticated(false);
     navigate("/login");
   };
 
   return (
     <Routes>
-      {/* Public route */}
+
+      {/* Public Login Route */}
       <Route
         path="/login"
         element={
@@ -46,7 +58,7 @@ function AppRoutes() {
         }
       />
 
-      {/* Protected layout */}
+      {/* Protected Routes */}
       <Route
         element={
           isAuthenticated ? (
@@ -56,11 +68,28 @@ function AppRoutes() {
           )
         }
       >
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/employees" element={<Employees />} />
-        <Route path="/departments" element={<Departments />} />
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+
+        <Route
+          path="/employees"
+          element={<Employees />}
+        />
+
+        <Route
+          path="/departments"
+          element={<Departments />}
+        />
+
+        <Route
+          path="/managers"
+          element={<Managers />}
+        />
       </Route>
 
+      {/* Default Route */}
       <Route
         path="*"
         element={
@@ -70,9 +99,11 @@ function AppRoutes() {
           />
         }
       />
+
     </Routes>
   );
 }
+
 
 function App() {
   return (

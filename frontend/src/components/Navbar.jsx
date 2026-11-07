@@ -1,6 +1,8 @@
-function Navbar({ onAddEmployee }) {
+
+function Navbar({ onAddEmployee, onAddManager }) {
   return (
     <header className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-7">
+
       {/* Page Title */}
       <div>
         <p className="text-xs text-slate-400 sm:text-sm">
@@ -12,13 +14,24 @@ function Navbar({ onAddEmployee }) {
         </h1>
       </div>
 
-      {/* Add Employee Button */}
-      <button
-        onClick={onAddEmployee}
-        className="rounded-lg bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700 sm:px-6"
-      >
-        + Add Employee
-      </button>
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-2">
+
+        <button
+          onClick={onAddManager}
+          className="rounded-lg border border-violet-600 px-4 py-3 text-sm font-semibold text-violet-600 transition hover:bg-violet-50"
+        >
+          + Add Manager
+        </button>
+
+        <button
+          onClick={onAddEmployee}
+          className="rounded-lg bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700 sm:px-6"
+        >
+          + Add Employee
+        </button>
+
+      </div>
     </header>
   );
 }
