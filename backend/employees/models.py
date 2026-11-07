@@ -1,6 +1,7 @@
 from django.db import models
 
 
+<<<<<<< HEAD
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
@@ -10,6 +11,8 @@ class Department(models.Model):
         return self.name
 
 
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 class Employee(models.Model):
 
     STATUS_CHOICES = [
@@ -21,6 +24,7 @@ class Employee(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
 
+<<<<<<< HEAD
     # New department relationship
     department = models.ForeignKey(
         Department,
@@ -33,6 +37,17 @@ class Employee(models.Model):
     designation = models.CharField(max_length=100)
     joining_date = models.DateField()
     salary = models.DecimalField(max_digits=10, decimal_places=2)
+=======
+    department = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+
+    joining_date = models.DateField()
+
+    salary = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
     status = models.CharField(
         max_length=10,

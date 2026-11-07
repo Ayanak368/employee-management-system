@@ -5,7 +5,10 @@ import API from "../services/api";
 import StatCard from "../components/StatCard";
 import EmployeeTable from "../components/EmployeeTable";
 import EmployeeForm from "../components/EmployeeForm";
+<<<<<<< HEAD
 import ManagerForm from "../components/ManagerForm";
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 import Navbar from "../components/Navbar";
 
 const emptyForm = {
@@ -20,6 +23,7 @@ const emptyForm = {
 };
 
 function Dashboard() {
+<<<<<<< HEAD
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
 
@@ -28,6 +32,9 @@ function Dashboard() {
 
   const [showManagerModal, setShowManagerModal] = useState(false);
   const [managerCredentials, setManagerCredentials] = useState(null);
+=======
+  const [employees, setEmployees] = useState([]);
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
   const [dashboardStats, setDashboardStats] = useState({
     total_employees: 0,
@@ -49,7 +56,10 @@ function Dashboard() {
 
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+<<<<<<< HEAD
   const [credentials, setCredentials] = useState(null);
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
   // Format API errors
   const getErrorMessage = (err) => {
@@ -57,6 +67,7 @@ function Dashboard() {
 
     if (data && typeof data === "object") {
       return Object.entries(data)
+<<<<<<< HEAD
         .map(([field, errors]) => {
           const message = Array.isArray(errors)
             ? errors.join(", ")
@@ -66,12 +77,18 @@ function Dashboard() {
 
           return `${field}: ${message}`;
         })
+=======
+        .map(([field, errors]) =>
+          `${field}: ${Array.isArray(errors) ? errors.join(", ") : errors}`
+        )
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
         .join("\n");
     }
 
     return err.message || "Something went wrong";
   };
 
+<<<<<<< HEAD
   // Fetch employees according to role
   const fetchEmployees = async () => {
     try {
@@ -94,6 +111,15 @@ function Dashboard() {
       } else {
         setEmployees(response.data);
       }
+=======
+  // Fetch employees
+  const fetchEmployees = async () => {
+    try {
+      setLoading(true);
+
+      const response = await API.get("list/");
+      setEmployees(response.data);
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
@@ -101,6 +127,7 @@ function Dashboard() {
     }
   };
 
+<<<<<<< HEAD
   // Fetch departments
   const fetchDepartments = async () => {
     try {
@@ -115,10 +142,15 @@ function Dashboard() {
   const fetchDashboardStats = async () => {
     if (role !== "HR") return;
 
+=======
+  // Fetch dashboard statistics
+  const fetchDashboardStats = async () => {
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     try {
       const response = await API.get("dashboard-stats/");
       setDashboardStats(response.data);
     } catch (err) {
+<<<<<<< HEAD
       console.log("Dashboard statistics error:", err.response?.data);
     }
   };
@@ -141,11 +173,37 @@ function Dashboard() {
     setEditId(null);
     setFormData({ ...emptyForm });
     setCredentials(null);
+=======
+      console.error(getErrorMessage(err));
+    }
+  };
+
+  // Load data when dashboard opens
+  useEffect(() => {
+    fetchEmployees();
+    fetchDashboardStats();
+  }, []);
+
+  // Get unique departments
+  const departments = useMemo(
+    () => [...new Set(employees.map((emp) => emp.department))],
+    [employees]
+  );
+
+  // Open add form
+  const openAddForm = () => {
+    setEditId(null);
+    setFormData({ ...emptyForm });
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     setError("");
     setShowModal(true);
   };
 
+<<<<<<< HEAD
   // Open edit employee form
+=======
+  // Open edit form
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
   const handleEdit = (employee) => {
     setEditId(employee.id);
 
@@ -160,12 +218,19 @@ function Dashboard() {
       status: employee.status,
     });
 
+<<<<<<< HEAD
     setCredentials(null);
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     setError("");
     setShowModal(true);
   };
 
+<<<<<<< HEAD
   // Handle employee form changes
+=======
+  // Handle form changes
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -183,6 +248,7 @@ function Dashboard() {
       setSaving(true);
       setError("");
       setMessage("");
+<<<<<<< HEAD
       setCredentials(null);
 
       if (editId) {
@@ -193,6 +259,15 @@ function Dashboard() {
 
         setCredentials(response.data.login_credentials);
         setMessage("Employee and login account created successfully!");
+=======
+
+      if (editId) {
+        await API.put(`${editId}/`, formData);
+        setMessage("Employee updated successfully!");
+      } else {
+        await API.post("list/", formData);
+        setMessage("Employee added successfully!");
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
       }
 
       setShowModal(false);
@@ -208,6 +283,7 @@ function Dashboard() {
     }
   };
 
+<<<<<<< HEAD
   // Create manager account
 const handleCreateManager = async (formData) => {
   try {
@@ -230,6 +306,8 @@ const handleCreateManager = async (formData) => {
   }
 };
 
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
   // Delete employee
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this employee?")) {
@@ -239,9 +317,14 @@ const handleCreateManager = async (formData) => {
     try {
       setError("");
       setMessage("");
+<<<<<<< HEAD
       setCredentials(null);
 
       await API.delete(`list/${id}/`);
+=======
+
+      await API.delete(`${id}/`);
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
       setMessage("Employee deleted successfully!");
 
@@ -252,7 +335,11 @@ const handleCreateManager = async (formData) => {
     }
   };
 
+<<<<<<< HEAD
   // Close employee form
+=======
+  // Close form
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
   const closeForm = () => {
     setShowModal(false);
     setError("");
@@ -291,6 +378,7 @@ const handleCreateManager = async (formData) => {
       <main className="mx-auto min-w-0 w-full max-w-[1600px] p-3 sm:p-5 lg:p-8">
 
         {/* Navbar */}
+<<<<<<< HEAD
         {role === "HR" && (
           <Navbar
             onAddEmployee={openAddForm}
@@ -301,12 +389,19 @@ const handleCreateManager = async (formData) => {
             }}
           />
         )}
+=======
+        <Navbar onAddEmployee={openAddForm} />
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
         {/* Welcome Banner */}
         <section className="mb-6 flex flex-col gap-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-500 p-5 text-white sm:mb-7 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div>
             <h2 className="mb-2 text-lg font-bold sm:text-xl">
+<<<<<<< HEAD
               Welcome back, {username || "User"} 👋
+=======
+              Welcome back, Admin 👋
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
             </h2>
 
             <p className="text-xs text-violet-100 sm:text-sm">
@@ -319,6 +414,7 @@ const handleCreateManager = async (formData) => {
           </span>
         </section>
 
+<<<<<<< HEAD
         {/* HR Statistics */}
         {role === "HR" && (
           <section className="mb-6 grid grid-cols-1 gap-3 sm:mb-8 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
@@ -327,6 +423,14 @@ const handleCreateManager = async (formData) => {
             ))}
           </section>
         )}
+=======
+        {/* Statistics */}
+        <section className="mb-6 grid grid-cols-1 gap-3 sm:mb-8 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
+          {stats.map((stat) => (
+            <StatCard key={stat.title} {...stat} />
+          ))}
+        </section>
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
         {/* Success Message */}
         {message && (
@@ -336,12 +440,17 @@ const handleCreateManager = async (formData) => {
             <button
               onClick={() => setMessage("")}
               className="shrink-0 font-semibold"
+<<<<<<< HEAD
+=======
+              aria-label="Close message"
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
             >
               ✕
             </button>
           </div>
         )}
 
+<<<<<<< HEAD
         {/* Employee Credentials */}
         {credentials && (
           <div className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
@@ -426,12 +535,20 @@ const handleCreateManager = async (formData) => {
 
         {/* Error Message */}
         {error && !showModal && !showManagerModal && (
+=======
+        {/* Error Message */}
+        {error && !showModal && (
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
           <div className="mb-5 flex items-start justify-between gap-3 whitespace-pre-line rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
             <span>{error}</span>
 
             <button
               onClick={() => setError("")}
               className="shrink-0 font-semibold"
+<<<<<<< HEAD
+=======
+              aria-label="Close error"
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
             >
               ✕
             </button>
@@ -442,16 +559,27 @@ const handleCreateManager = async (formData) => {
         <EmployeeTable
           employees={employees}
           loading={loading}
+<<<<<<< HEAD
           role={role}
           search={search}
           setSearch={setSearch}
           departments={departmentNames}
+=======
+          search={search}
+          setSearch={setSearch}
+          departments={departments}
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
           departmentFilter={departmentFilter}
           setDepartmentFilter={setDepartmentFilter}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
+<<<<<<< HEAD
           onEdit={role === "HR" ? handleEdit : undefined}
           onDelete={role === "HR" ? handleDelete : undefined}
+=======
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
         />
 
         {/* Footer */}
@@ -468,11 +596,15 @@ const handleCreateManager = async (formData) => {
         editId={editId}
         saving={saving}
         error={error}
+<<<<<<< HEAD
         departments={departments}
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
         onChange={handleChange}
         onSubmit={handleSubmit}
         onClose={closeForm}
       />
+<<<<<<< HEAD
 
       {/* Add Manager Form */}
       {showManagerModal && (
@@ -482,6 +614,8 @@ const handleCreateManager = async (formData) => {
           onClose={() => setShowManagerModal(false)}
         />
       )}
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
     </div>
   );
 }

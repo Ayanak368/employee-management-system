@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from rest_framework.generics import (
     GenericAPIView,
     ListAPIView,
@@ -68,11 +69,48 @@ class ManagerViewSet(ModelViewSet):
         return ManagerListSerializer  
     
 
+=======
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import authenticate
+from django.conf import settings
+from rest_framework import serializers
+import jwt
+from datetime import datetime, timedelta, timezone
+
+
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView
+)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from .models import Employee
+from .serializers import EmployeeSerializer
+from .serializers import LoginSerializer
+
+
+# GET all employees and POST new employee
+class EmployeeListView(ListCreateAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+
+# GET, PUT, PATCH and DELETE one employee
+class EmployeeDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 
 
 # Dashboard statistics
 @api_view(['GET'])
+<<<<<<< HEAD
 @permission_classes([IsHR])
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 def dashboard_stats(request):
     data = {
         'total_employees': Employee.objects.count(),
@@ -83,6 +121,7 @@ def dashboard_stats(request):
 
     return Response(data)
 
+<<<<<<< HEAD
 class DepartmentListView(ListAPIView):
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
@@ -127,6 +166,8 @@ class ManagerViewSet(ModelViewSet):
         instance.user.delete()
 
 
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
  # Login view
 
 

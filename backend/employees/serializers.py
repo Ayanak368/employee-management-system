@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -229,3 +230,18 @@ class ManagerListSerializer(serializers.ModelSerializer):
             'email',
             'department_name',
         ]
+=======
+from rest_framework import serializers
+from .models import Employee
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
+        
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c

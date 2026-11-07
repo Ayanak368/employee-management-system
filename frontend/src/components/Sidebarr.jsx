@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Sidebar({ onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
+<<<<<<< HEAD
   const role = localStorage.getItem("role");
 
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
   const linkStyle = ({ isActive }) =>
     `block rounded-lg px-4 py-3 text-sm font-medium transition ${
       isActive
@@ -51,12 +57,15 @@ function Sidebar({ onLogout }) {
           <NavLink to="/departments" className={linkStyle}>
             Departments
           </NavLink>
+<<<<<<< HEAD
 
           {role === "HR" && (
             <NavLink to="/managers" className={linkStyle}>
               Managers
             </NavLink>
           )}
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
         </nav>
 
         <button
@@ -94,6 +103,7 @@ function Sidebar({ onLogout }) {
             >
               Departments
             </NavLink>
+<<<<<<< HEAD
 
             {role === "HR" && (
               <NavLink
@@ -104,6 +114,8 @@ function Sidebar({ onLogout }) {
                 Managers
               </NavLink>
             )}
+=======
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
           </nav>
 
           <button
@@ -121,4 +133,8 @@ function Sidebar({ onLogout }) {
   );
 }
 
+<<<<<<< HEAD
 export default Sidebar;
+=======
+export default Sidebar;
+>>>>>>> 9c0555efaad0b4cfde9da686f50cfb022a4f2e1c
