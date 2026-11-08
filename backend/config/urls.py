@@ -30,4 +30,7 @@ urlpatterns = [
         TokenRefreshView.as_view(),
         name='token_refresh'
     ),
+    
+    path('tasks/', include('tasks.urls')),
+    path('accounts/', include('accounts.urls')),
 ]

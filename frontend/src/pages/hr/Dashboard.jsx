@@ -1,12 +1,28 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import API from "../services/api";
-import StatCard from "../components/StatCard";
-import EmployeeTable from "../components/EmployeeTable";
-import EmployeeForm from "../components/EmployeeForm";
-import ManagerForm from "../components/ManagerForm";
-import Navbar from "../components/Navbar";
+import StatCard from "../../components/StatCard";
+import EmployeeTable from "../../components/EmployeeTable";
+import EmployeeForm from "../../components/EmployeeForm";
+import ManagerForm from "../../components/ManagerForm";
+import Navbar from "../../components/Navbar";
+
+// API modules
+import {
+  getEmployees,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+  getDashboardStats,
+} from "../../services/api/employeeAPI";
+
+import { getDepartments } from "../../services/api/departmentAPI";
+
+import {
+  createManager,
+} from "../../services/api/managerAPI";
+
+import { getMyProfile } from "../../services/api/profileAPI";
 
 const emptyForm = {
   name: "",
@@ -78,21 +94,17 @@ function Dashboard() {
       setLoading(true);
       setError("");
 
-      let endpoint = "list/";
+      let response;
 
-      if (role === "MANAGER") {
-        endpoint = "manager/employees/";
-      } else if (role === "EMPLOYEE") {
-        endpoint = "my-profile/";
-      }
-
-      const response = await API.get(endpoint);
-
-      // Employee profile endpoint returns one object
-      if (role === "EMPLOYEE") {
-        setEmployees(response.data ? [response.data] : []);
-      } else {
+      if (role === "HR") {
+        response = await getEmployees();
         setEmployees(response.data);
+      } else if (role === "MANAGER") {
+        response = await getManagerEmployees();
+        setEmployees(response.data);
+      } else if (role === "EMPLOYEE") {
+        response = await getMyProfile();
+        setEmployees(response.data ? [response.data] : []);
       }
     } catch (err) {
       setError(getErrorMessage(err));
@@ -104,7 +116,7 @@ function Dashboard() {
   // Fetch departments
   const fetchDepartments = async () => {
     try {
-      const response = await API.get("departments/");
+      const response = await getDepartments();
       setDepartments(response.data);
     } catch (err) {
       setError(getErrorMessage(err));
@@ -116,10 +128,13 @@ function Dashboard() {
     if (role !== "HR") return;
 
     try {
-      const response = await API.get("dashboard-stats/");
+      const response = await getDashboardStats();
       setDashboardStats(response.data);
     } catch (err) {
-      console.log("Dashboard statistics error:", err.response?.data);
+      console.log(
+        "Dashboard statistics error:",
+        err.response?.data
+      );
     }
   };
 
@@ -186,13 +201,15 @@ function Dashboard() {
       setCredentials(null);
 
       if (editId) {
-        await API.put(`list/${editId}/`, formData);
+        await updateEmployee(editId, formData);
         setMessage("Employee updated successfully!");
       } else {
-        const response = await API.post("list/", formData);
+        const response = await addEmployee(formData);
 
         setCredentials(response.data.login_credentials);
-        setMessage("Employee and login account created successfully!");
+        setMessage(
+          "Employee and login account created successfully!"
+        );
       }
 
       setShowModal(false);
@@ -209,30 +226,33 @@ function Dashboard() {
   };
 
   // Create manager account
-const handleCreateManager = async (formData) => {
-  try {
-    setError("");
-    setManagerCredentials(null);
+  const handleCreateManager = async (formData) => {
+    try {
+      setError("");
+      setManagerCredentials(null);
 
-    const response = await API.post("managers/", formData);
+      const response = await createManager(formData);
 
-    console.log("Manager response:", response.data);
+      setManagerCredentials(response.data);
+      setShowManagerModal(false);
+      setMessage("Manager account created successfully!");
+    } catch (err) {
+      console.log("Status:", err.response?.status);
+      console.log("Backend error:", err.response?.data);
 
-    setManagerCredentials(response.data);
-    setShowManagerModal(false);
-    setMessage("Manager account created successfully!");
-
-  } catch (err) {
-    console.log("Status:", err.response?.status);
-    console.log("Backend error:", err.response?.data);
-
-    alert(JSON.stringify(err.response?.data, null, 2));
-  }
-};
+      alert(
+        JSON.stringify(err.response?.data, null, 2)
+      );
+    }
+  };
 
   // Delete employee
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this employee?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this employee?"
+      )
+    ) {
       return;
     }
 
@@ -241,7 +261,7 @@ const handleCreateManager = async (formData) => {
       setMessage("");
       setCredentials(null);
 
-      await API.delete(`list/${id}/`);
+      await deleteEmployee(id);
 
       setMessage("Employee deleted successfully!");
 
@@ -391,16 +411,20 @@ const handleCreateManager = async (formData) => {
               </p>
 
               <p>
-                Department: <strong>{managerCredentials.department}</strong>
+                Department:{" "}
+                <strong>{managerCredentials.department}</strong>
               </p>
 
               <p>
-                Username: <strong>{managerCredentials.username}</strong>
+                Username:{" "}
+                <strong>{managerCredentials.username}</strong>
               </p>
 
               <p>
                 Temporary Password:{" "}
-                <strong>{managerCredentials.temporary_password}</strong>
+                <strong>
+                  {managerCredentials.temporary_password}
+                </strong>
               </p>
             </div>
 

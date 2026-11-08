@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import axios from "axios";
+import { loginUser } from "../services/api/authAPI";
 
 function Login({ onLogin }) {
   const [formData, setFormData] = useState({
@@ -25,10 +25,7 @@ function Login({ onLogin }) {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/token/",
-        formData
-      );
+      const response = await loginUser(formData);
 
       const { access, refresh, role } = response.data;
 

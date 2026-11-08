@@ -1,6 +1,8 @@
-
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import {
+  getManagers,
+  deleteManager,
+} from "../../services/api/managerAPI";
 
 function Managers() {
   const [managers, setManagers] = useState([]);
@@ -8,9 +10,10 @@ function Managers() {
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
 
+  // Fetch managers
   const fetchManagers = async () => {
     try {
-      const response = await API.get("managers/");
+      const response = await getManagers();
       setManagers(response.data);
       setError("");
     } catch (err) {
@@ -35,12 +38,12 @@ function Managers() {
 
     try {
       setDeletingId(id);
-      await API.delete(`managers/${id}/`);
+
+      await deleteManager(id);
 
       setManagers((current) =>
         current.filter((manager) => manager.id !== id)
       );
-
     } catch (err) {
       console.error(err);
       alert("Failed to delete manager.");
@@ -58,9 +61,11 @@ function Managers() {
           <p className="text-sm text-slate-400">
             Workspace / Managers
           </p>
+
           <h1 className="text-2xl font-bold text-slate-800">
             Managers
           </h1>
+
           <p className="mt-1 text-sm text-slate-500">
             Manage your department managers.
           </p>
@@ -71,6 +76,7 @@ function Managers() {
           <p className="text-sm text-slate-500">
             Total Managers
           </p>
+
           <h2 className="mt-2 text-3xl font-bold text-violet-600">
             {managers.length}
           </h2>
@@ -101,7 +107,6 @@ function Managers() {
               <table className="w-full text-left text-sm">
                 <thead className="bg-slate-50 text-slate-500">
                   <tr>
-                    <th className="p-4">ID</th>
                     <th className="p-4">Name</th>
                     <th className="p-4">Email</th>
                     <th className="p-4">Department</th>
@@ -115,8 +120,6 @@ function Managers() {
                       key={manager.id}
                       className="border-t hover:bg-slate-50"
                     >
-                      <td className="p-4">{manager.id}</td>
-
                       <td className="p-4 font-medium">
                         {manager.name || "Not available"}
                       </td>

@@ -9,18 +9,26 @@ import {
 
 // Pages
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Employees from "./pages/Employees";
-import Departments from "./pages/Departments";
-import Managers from "./pages/Managers";
+import Dashboard from "./pages/hr/Dashboard";
+import Employees from "./pages/hr/Employees";
+import Departments from "./pages/hr/Departments";
+import Managers from "./pages/hr/Managers";
+
+import ManagerDashboard from "./pages/manager/Dashboard";
+import MyEmployees from "./pages/manager/MyEmployees";
+import AssignTask from "./pages/manager/AssignTask";
+import Tasks from "./pages/manager/Tasks";
+
+import MyTasks from "./pages/Employee/MyTasks";
+import EmployeeDashboard from "./pages/Employee/Dashboard";
+import Profile from "./pages/Employee/Profile";
 
 // Layout
 import Layout from "./components/Layout";
 
-
 function AppRoutes() {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    Boolean(localStorage.getItem("access_token"))
+    Boolean(localStorage.getItem("access_token")),
   );
 
   const navigate = useNavigate();
@@ -44,7 +52,6 @@ function AppRoutes() {
 
   return (
     <Routes>
-
       {/* Public Login Route */}
       <Route
         path="/login"
@@ -69,33 +76,82 @@ function AppRoutes() {
       >
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={
+            localStorage.getItem("role") === "HR" ? (
+              <Dashboard />
+            ) : localStorage.getItem("role") === "MANAGER" ? (
+              <ManagerDashboard />
+            ) : (
+              <EmployeeDashboard />
+            )
+          }
         />
 
         <Route
-          path="/employees"
-          element={<Employees />}
+          path="/my-employees"
+          element={
+            localStorage.getItem("role") === "MANAGER" ? (
+              <MyEmployees />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
 
         <Route
-          path="/departments"
-          element={<Departments />}
+          path="/assign-task"
+          element={
+            localStorage.getItem("role") === "MANAGER" ? (
+              <AssignTask />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            localStorage.getItem("role") === "MANAGER" ? (
+              <Tasks />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
+        />
+        <Route
+          path="/my-tasks"
+          element={
+            localStorage.getItem("role") === "EMPLOYEE" ? (
+              <MyTasks />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
 
         <Route
-          path="/managers"
-          element={<Managers />}
+          path="/profile"
+          element={
+            ["MANAGER", "EMPLOYEE"].includes(localStorage.getItem("role")) ? (
+              <Profile />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          }
         />
+
+        <Route path="/employees" element={<Employees />} />
+
+        <Route path="/departments" element={<Departments />} />
+
+        <Route path="/managers" element={<Managers />} />
       </Route>
 
       {/* Default Route */}
       <Route
         path="*"
         element={
-          <Navigate
-            to={isAuthenticated ? "/dashboard" : "/login"}
-            replace
-          />
+          <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
         }
       />
     </Routes>

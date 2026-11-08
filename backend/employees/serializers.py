@@ -59,11 +59,33 @@ class LoginSerializer(serializers.Serializer):
 # 3. Department Serializer
 # ==========================================
 
+
 class DepartmentSerializer(serializers.ModelSerializer):
+    employee_count = serializers.SerializerMethodField()
+    manager_names = serializers.SerializerMethodField()
 
     class Meta:
         model = Department
-        fields = '__all__'
+        fields = [
+            'id',
+            'name',
+            'description',
+            'employee_count',
+            'manager_names',
+        ]
+
+    def get_employee_count(self, obj):
+        return obj.employees.count()
+
+    def get_manager_names(self, obj):
+        managers = obj.managers.filter(
+            role='MANAGER'
+        ).select_related('user')
+
+        return [
+            manager.user.get_full_name() or manager.user.username
+            for manager in managers
+        ]
 
 
 # ==========================================

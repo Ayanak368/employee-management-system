@@ -24,9 +24,10 @@ urlpatterns = [
         name='manager_employee_list'
     ),
 
-    path(
-        'my-profile/',
-        views.EmployeeProfileView.as_view(),
-        name='my_profile'
-    ),
+path(
+    'profile/',
+    views.MyProfileView.as_view(),
+    name='my_profile_details'
+),
+    
 ]

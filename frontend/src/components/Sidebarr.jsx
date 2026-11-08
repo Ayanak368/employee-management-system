@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 
 function Sidebarr({ onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const role = localStorage.getItem("role");
 
   const linkStyle = ({ isActive }) =>
@@ -15,6 +14,43 @@ function Sidebarr({ onLogout }) {
     }`;
 
   const closeMenu = () => setMenuOpen(false);
+
+  const navigation = {
+    HR: [
+      { name: "Dashboard", path: "/dashboard" },
+      { name: "Employees", path: "/employees" },
+      { name: "Departments", path: "/departments" },
+      { name: "Managers", path: "/managers" },
+    ],
+
+    MANAGER: [
+      { name: "Dashboard", path: "/dashboard" },
+      { name: "My Employees", path: "/my-employees" },
+      { name: "Tasks", path: "/tasks" },
+      { name: "Assign Task", path: "/assign-task" },
+      { name: "My Profile", path: "/profile" },
+    ],
+
+    EMPLOYEE: [
+      { name: "Dashboard", path: "/dashboard" },
+      { name: "My Tasks", path: "/my-tasks" },
+      { name: "My Profile", path: "/profile" },
+    ],
+  };
+
+  const links = navigation[role] || [];
+
+  const renderLinks = () =>
+    links.map((link) => (
+      <NavLink
+        key={link.path}
+        to={link.path}
+        className={linkStyle}
+        onClick={closeMenu}
+      >
+        {link.name}
+      </NavLink>
+    ));
 
   return (
     <>
@@ -27,7 +63,6 @@ function Sidebarr({ onLogout }) {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="rounded-lg bg-slate-100 px-3 py-2 text-xl"
-          aria-label="Toggle menu"
         >
           {menuOpen ? "✕" : "☰"}
         </button>
@@ -40,23 +75,7 @@ function Sidebarr({ onLogout }) {
         </h1>
 
         <nav className="space-y-2">
-          <NavLink to="/dashboard" className={linkStyle}>
-            Dashboard
-          </NavLink>
-
-          <NavLink to="/employees" className={linkStyle}>
-            Employees
-          </NavLink>
-
-          <NavLink to="/departments" className={linkStyle}>
-            Departments
-          </NavLink>
-
-          {role === "HR" && (
-            <NavLink to="/managers" className={linkStyle}>
-              Managers
-            </NavLink>
-          )}
+          {renderLinks()}
         </nav>
 
         <button
@@ -71,39 +90,7 @@ function Sidebarr({ onLogout }) {
       {menuOpen && (
         <div className="absolute left-0 right-0 top-[65px] z-50 border-b bg-white p-5 shadow-lg md:hidden">
           <nav className="space-y-2">
-            <NavLink
-              to="/dashboard"
-              className={linkStyle}
-              onClick={closeMenu}
-            >
-              Dashboard
-            </NavLink>
-
-            <NavLink
-              to="/employees"
-              className={linkStyle}
-              onClick={closeMenu}
-            >
-              Employees
-            </NavLink>
-
-            <NavLink
-              to="/departments"
-              className={linkStyle}
-              onClick={closeMenu}
-            >
-              Departments
-            </NavLink>
-
-            {role === "HR" && (
-              <NavLink
-                to="/managers"
-                className={linkStyle}
-                onClick={closeMenu}
-              >
-                Managers
-              </NavLink>
-            )}
+            {renderLinks()}
           </nav>
 
           <button
